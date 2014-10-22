@@ -10,6 +10,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.share_review(user_id, movie_url)
+    user = User.find(user_id)
+    user.facebook.put_connections("me", "cinematron:review", movie: movie_url)
+  end
+
   def facebook
     @facebook ||= Koala::Facebook::API.new(oauth_token)
     block_given? ? yield(@facebook) : @facebook
